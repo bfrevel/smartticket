@@ -22,13 +22,18 @@ image:architecture.png[]
 
 ## Build
 
+[IMPORTANT]
+====
+Adapt the docker registry. Replace <bfrevel> with your personal registry.
+====
+
 .event-api
 [source, sh]
 ----
 cd event-api
 ./gradlew build -Dquarkus.package.type=native -Dquarkus.native.container-build=true
 docker build -t bfrevel/smartticket-event-api:latest -f src/main/docker/Dockerfile.native-micro .
-docker push bfrevel/smartticket/event-api:latest
+docker push bfrevel/smartticket-event-api:latest
 ----
 
 .order-api
@@ -37,16 +42,16 @@ docker push bfrevel/smartticket/event-api:latest
 cd order-api
 ./gradlew build -Dquarkus.package.type=native -Dquarkus.native.container-build=true
 docker build -t bfrevel/smartticket-order-api:latest -f src/main/docker/Dockerfile.native-micro .
-docker push bfrevel/smartticket/order-api:latest
+docker push bfrevel/smartticket-order-api:latest
 ----
 
 .order-processor
 [source, sh]
 ----
-cd order-api
+cd order-processor
 ./gradlew build -Dquarkus.package.type=native -Dquarkus.native.container-build=true
 docker build -t bfrevel/smartticket-order-processor:latest -f src/main/docker/Dockerfile.native-micro .
-docker push bfrevel/smartticket/order-processor:latest
+docker push bfrevel/smartticket-order-processor:latest
 ----
 
 .web
@@ -60,8 +65,32 @@ docker push bfrevel/smartticket-web:latest
 
 ## Run
 
+[IMPORTANT]
+====
+Adapt the docker registry in `smartticket.yaml`, if you want to use your personal images. 
+====
 
 [source, sh]
 ----
 kubectl apply -f smartticket.yaml
 ----
+
+## Instructions for minikube
+
+[source, sh]
+----
+# Start minikube
+minikube start
+
+# Enable Nginx Proxy
+minikube addons enable ingress
+
+# Apply the SmartTicket application
+kubectl apply -f smartticket.yaml
+
+# On MacOS (don't forget to enter your password)
+minikube tunnel
+----
+
+Open your browser
+http://smartticket.localdev.me[]
