@@ -1,0 +1,19 @@
+# Create Diagrams
+
+
+.Prepare Environment
+[source, sh]
+----
+python3 -m venv .venv
+source .venv/bin/activate
+pip install --upgrade pip
+pip install -r requirements.txt
+----
+
+
+.Create Diagrams
+[source, sh]
+----
+py diagrams.py
+----
+

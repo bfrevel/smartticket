@@ -1,0 +1,328 @@
+---
+apiVersion: v1
+kind: Namespace
+metadata:
+  name: smartticket
+
+
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  labels:
+    app: order-rabbitmq
+  name: order-rabbitmq
+  namespace: smartticket
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: order-rabbitmq
+  template:
+    metadata:
+      labels:
+        app: order-rabbitmq
+    spec:
+      containers:
+      - image: rabbitmq:3.11.10-alpine
+        name: rabbitmq
+        ports:
+        - containerPort: 5672
+        - containerPort: 15672
+
+---
+apiVersion: v1
+kind: Service
+metadata:
+  labels:
+    app: order-rabbitmq
+  name: order-rabbitmq
+  namespace: smartticket
+spec:
+  ports:
+  - port: 5672
+    protocol: TCP
+    targetPort: 5672
+  selector:
+    app: order-rabbitmq
+  type: ClusterIP
+
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  labels:
+    app: event-postgres
+  name: event-postgres
+  namespace: smartticket
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: event-postgres
+  template:
+    metadata:
+      labels:
+        app: event-postgres
+    spec:
+      containers:
+      - image: postgres:15.2-alpine
+        name: postgres
+        ports:
+        - containerPort: 5432
+        env:
+        - name: POSTGRES_PASSWORD
+          value: "postgres"
+
+---
+apiVersion: v1
+kind: Service
+metadata:
+  labels:
+    app: event-postgres
+  name: event-postgres
+  namespace: smartticket
+spec:
+  ports:
+  - port: 5432
+    protocol: TCP
+    targetPort: 5432
+  selector:
+    app: event-postgres
+  type: ClusterIP
+
+
+
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  labels:
+    app: event-redis
+  name: event-redis
+  namespace: smartticket
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: event-redis
+  template:
+    metadata:
+      labels:
+        app: event-redis
+    spec:
+      containers:
+      - image: redis:7.0.9-alpine
+        name: redis
+        ports:
+        - containerPort: 6379
+
+---
+apiVersion: v1
+kind: Service
+metadata:
+  labels:
+    app: event-redis
+  name: event-redis
+  namespace: smartticket
+spec:
+  ports:
+  - port: 6379
+    protocol: TCP
+    targetPort: 6379
+  selector:
+    app: event-redis
+  type: ClusterIP
+
+
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+
+  labels:
+    app: event-api
+  name: event-api
+  namespace: smartticket
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: event-api
+  template:
+    metadata:
+      labels:
+        app: event-api
+    spec:
+      containers:
+      - image: bfrevel/smartticket-event-api
+        imagePullPolicy: IfNotPresent
+        name: event-api
+        ports:
+        - containerPort: 8080
+
+---
+apiVersion: v1
+kind: Service
+metadata:
+  labels:
+    app: event-api
+  name: event-api
+  namespace: smartticket
+spec:
+  ports:
+  - port: 8080
+    protocol: TCP
+    targetPort: 8080
+  selector:
+    app: event-api
+  type: ClusterIP
+
+
+
+
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+
+  labels:
+    app: order-api
+  name: order-api
+  namespace: smartticket
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: order-api
+  template:
+    metadata:
+      labels:
+        app: order-api
+    spec:
+      containers:
+      - image: bfrevel/smartticket-order-api
+        imagePullPolicy: IfNotPresent
+        name: order-api
+        ports:
+        - containerPort: 8080
+
+---
+apiVersion: v1
+kind: Service
+metadata:
+  labels:
+    app: order-api
+  name: order-api
+  namespace: smartticket
+spec:
+  ports:
+  - port: 8080
+    protocol: TCP
+    targetPort: 8080
+  selector:
+    app: order-api
+  type: ClusterIP
+
+
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+
+  labels:
+    app: order-processor
+  name: order-processor
+  namespace: smartticket
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: order-processor
+  template:
+    metadata:
+      labels:
+        app: order-processor
+    spec:
+      containers:
+      - image: bfrevel/smartticket-order-processor
+        imagePullPolicy: IfNotPresent
+        name: order-processor
+
+
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+
+  labels:
+    app: web
+  name: web
+  namespace: smartticket
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: web
+  template:
+    metadata:
+      labels:
+        app: web
+    spec:
+      containers:
+      - image: bfrevel/smartticket-web
+        imagePullPolicy: IfNotPresent
+        name: web
+        ports:
+        - containerPort: 80
+
+---
+apiVersion: v1
+kind: Service
+metadata:
+  labels:
+    app: web
+  name: web
+  namespace: smartticket
+spec:
+  ports:
+  - port: 80
+    protocol: TCP
+    targetPort: 80
+  selector:
+    app: web
+  type: ClusterIP
+
+---
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  name: demo-localhost
+  namespace: smartticket
+spec:
+  ingressClassName: nginx
+  rules:
+  - host: demo.localdev.me
+    http:
+      paths:
+      - path: /
+        pathType: Prefix
+        backend:
+          service:
+            name: web
+            port:
+              number: 80
+      - path: /event
+        pathType: Prefix
+        backend:
+          service:
+            name: event-api
+            port:
+              number: 8080
+      - path: /order
+        pathType: Prefix
+        backend:
+          service:
+            name: order-api
+            port:
+              number: 8080

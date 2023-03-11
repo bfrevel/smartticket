@@ -1,0 +1,67 @@
+# SmartTicket!
+
+:imagesdir: diagrams
+:data-uri:
+
+## Intro
+
+This is a reactive microservice demo application.
+
+The application is using the following Product and Frameworks:
+
+* https://quarkus.io[Quarkus] for services
+* https://svelte.dev[Svelte] for web frontend
+* https://svelte.dev[Svelte] as the https server for the frontend
+* https://redis.io[Redis] for caching
+* https://postgresql.org[PostgreSQL] for persistence
+* https://rabbitmq.com[RabbitMQ] for messaging
+
+## Architecture
+
+image:architecture.png[]
+
+## Build
+
+.event-api
+[source, sh]
+----
+cd event-api
+./gradlew build -Dquarkus.package.type=native -Dquarkus.native.container-build=true
+docker build -t bfrevel/smartticket-event-api:latest -f src/main/docker/Dockerfile.native-micro .
+docker push bfrevel/smartticket/event-api:latest
+----
+
+.order-api
+[source, sh]
+----
+cd order-api
+./gradlew build -Dquarkus.package.type=native -Dquarkus.native.container-build=true
+docker build -t bfrevel/smartticket-order-api:latest -f src/main/docker/Dockerfile.native-micro .
+docker push bfrevel/smartticket/order-api:latest
+----
+
+.order-processor
+[source, sh]
+----
+cd order-api
+./gradlew build -Dquarkus.package.type=native -Dquarkus.native.container-build=true
+docker build -t bfrevel/smartticket-order-processor:latest -f src/main/docker/Dockerfile.native-micro .
+docker push bfrevel/smartticket/order-processor:latest
+----
+
+.web
+[source, sh]
+----
+cd web
+npm run build
+docker build -t bfrevel/smartticket-web:latest .
+docker push bfrevel/smartticket-web:latest
+----
+
+## Run
+
+
+[source, sh]
+----
+kubectl apply -f smartticket.yaml
+----
