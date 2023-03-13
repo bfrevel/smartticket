@@ -30,7 +30,7 @@ image:architecture.png[]
 
 [source, sh]
 ====
-kubectl -f https://raw.githubusercontent.com/bfrevel/smartticket/main/smartticket.yaml
+kubectl apply -f https://raw.githubusercontent.com/bfrevel/smartticket/main/smartticket.yaml
 ====
 
 
