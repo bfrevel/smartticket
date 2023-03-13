@@ -29,9 +29,9 @@ image:architecture.png[]
 ## Run the demo application
 
 [source, sh]
-====
+----
 kubectl apply -f https://raw.githubusercontent.com/bfrevel/smartticket/main/smartticket.yaml
-====
+----
 
 
 ## Run your private demo
