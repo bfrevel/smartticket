@@ -20,6 +20,12 @@ The application is using the following Product and Frameworks:
 
 image:architecture.png[]
 
+## Kubernetes Dependencies
+
+* NGINX Ingress Controller is required
+** https://docs.nginx.com/nginx-ingress-controller
+** https://kubernetes.io/docs/tasks/access-application-cluster/ingress-minikube
+
 ## Run the demo application
 
 [source, sh]
@@ -28,7 +34,9 @@ kubectl -f https://raw.githubusercontent.com/bfrevel/smartticket/main/smartticke
 ====
 
 
-## Build your own demo
+## Run your private demo
+
+### Build your private demo
 
 [IMPORTANT]
 ====
@@ -71,7 +79,7 @@ docker build -t bfrevel/smartticket-web:latest .
 docker push bfrevel/smartticket-web:latest
 ----
 
-## Run your own demo
+### Run your private demo
 
 .Run your local project
 [source, sh]
