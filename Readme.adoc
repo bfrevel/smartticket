@@ -20,7 +20,15 @@ The application is using the following Product and Frameworks:
 
 image:architecture.png[]
 
-## Build
+## Run the demo application
+
+[source, sh]
+====
+kubectl -f https://raw.githubusercontent.com/bfrevel/smartticket/main/smartticket.yaml
+====
+
+
+## Build your own demo
 
 [IMPORTANT]
 ====
@@ -63,13 +71,9 @@ docker build -t bfrevel/smartticket-web:latest .
 docker push bfrevel/smartticket-web:latest
 ----
 
-## Run
+## Run your own demo
 
-[IMPORTANT]
-====
-Adapt the docker registry in `smartticket.yaml`, if you want to use your personal images. 
-====
-
+.Run your local project
 [source, sh]
 ----
 kubectl apply -f smartticket.yaml
