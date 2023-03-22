@@ -11,7 +11,7 @@
 </script>
 
 <div class="row p-3">
-  <div class="card ">
+  <div class="card" title="event-{event.id}">
     <div class="card-body">
       <h5 class="card-title">{event.name}</h5>
       <p class="card-text">

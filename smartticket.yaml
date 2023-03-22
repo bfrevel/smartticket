@@ -298,7 +298,7 @@ metadata:
 spec:
   ingressClassName: nginx
   rules:
-  - host: smartticket.localdev.me
+  - host: web.localdev.me
     http:
       paths:
       - path: /
@@ -308,14 +308,18 @@ spec:
             name: web
             port:
               number: 80
-      - path: /event
+  - host: event-api.localdev.me
+    http:
+      - path: /
         pathType: Prefix
         backend:
           service:
             name: event-api
             port:
               number: 8080
-      - path: /order
+  - host: order-api.localdev.me
+    http:
+      - path: /
         pathType: Prefix
         backend:
           service:
