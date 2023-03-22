@@ -14,7 +14,7 @@
 
   const loadEvents = async () => {
     if (event_api_url != null) {
-      await fetch(event_api_url)
+      await fetch(`http://${event_api_url}/event`)
         .then((r) => r.json())
         .then((data) => {
           events = data;

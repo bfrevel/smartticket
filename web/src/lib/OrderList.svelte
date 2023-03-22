@@ -11,8 +11,7 @@
         hostnameArray[0] = 'order-api'
         order_api_url = hostnameArray.join(".")
 
-        console.log(`order_api_url: ${order_api_url}`);
-        var source = new EventSource(`${order_api_url}?clientId=${clientId}`);
+        var source = new EventSource(`http://${order_api_url}/order?clientId=${clientId}`);
         source.onmessage = (event) => {
             var json = JSON.parse(event.data);
             let order = orders.find((item) => item.id == json.id);
@@ -37,7 +36,7 @@
 
             orders = [order, ...orders];
 
-            fetch(`${order_api_url}?clientId=${clientId}&eventId=${event.id}`, {
+            fetch(`http://${order_api_url}/order?clientId=${clientId}&eventId=${event.id}`, {
                 method: "POST",
             })
                 .then((res) => res.text())

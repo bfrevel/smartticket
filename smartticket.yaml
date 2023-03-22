@@ -170,7 +170,7 @@ metadata:
   namespace: smartticket
 spec:
   ports:
-  - port: 8080
+  - port: 80
     protocol: TCP
     targetPort: 8080
   selector:
@@ -215,7 +215,7 @@ metadata:
   namespace: smartticket
 spec:
   ports:
-  - port: 8080
+  - port: 80
     protocol: TCP
     targetPort: 8080
   selector:
@@ -293,7 +293,7 @@ spec:
 apiVersion: networking.k8s.io/v1
 kind: Ingress
 metadata:
-  name: demo-localhost
+  name: smartticket-ingress
   namespace: smartticket
 spec:
   ingressClassName: nginx
@@ -310,19 +310,21 @@ spec:
               number: 80
   - host: event-api.localdev.me
     http:
+      paths:
       - path: /
         pathType: Prefix
         backend:
           service:
             name: event-api
             port:
-              number: 8080
+              number: 80
   - host: order-api.localdev.me
     http:
+      paths:
       - path: /
         pathType: Prefix
         backend:
           service:
             name: order-api
             port:
-              number: 8080
+              number: 80
