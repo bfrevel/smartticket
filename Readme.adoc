@@ -105,4 +105,4 @@ minikube tunnel
 ----
 
 Open your browser
-http://smartticket.localdev.me[]
+http://web.localdev.me[]
