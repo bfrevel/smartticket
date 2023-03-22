@@ -20,7 +20,23 @@ The application is using the following Product and Frameworks:
 
 image:architecture.png[]
 
-## Build
+## Kubernetes Dependencies
+
+* NGINX Ingress Controller is required
+** https://docs.nginx.com/nginx-ingress-controller
+** https://kubernetes.io/docs/tasks/access-application-cluster/ingress-minikube
+
+## Run the demo application
+
+[source, sh]
+----
+kubectl apply -f https://raw.githubusercontent.com/bfrevel/smartticket/main/smartticket.yaml
+----
+
+
+## Run your private demo
+
+### Build your private demo
 
 [IMPORTANT]
 ====
@@ -63,13 +79,9 @@ docker build -t bfrevel/smartticket-web:latest .
 docker push bfrevel/smartticket-web:latest
 ----
 
-## Run
+### Run your private demo
 
-[IMPORTANT]
-====
-Adapt the docker registry in `smartticket.yaml`, if you want to use your personal images. 
-====
-
+.Run your local project
 [source, sh]
 ----
 kubectl apply -f smartticket.yaml
