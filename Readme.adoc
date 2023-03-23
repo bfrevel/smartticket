@@ -33,6 +33,26 @@ image:architecture.png[]
 kubectl apply -f https://raw.githubusercontent.com/bfrevel/smartticket/main/smartticket.yaml
 ----
 
+### Instructions for minikube
+
+[source, sh]
+----
+# Start minikube
+minikube start
+
+# Enable Nginx Proxy
+minikube addons enable ingress
+
+# Apply the SmartTicket application
+kubectl apply -f smartticket.yaml
+
+# On MacOS (don't forget to enter your password)
+minikube tunnel
+----
+
+Open your browser
+http://web.localdev.me[]
+
 
 ## Run your private demo
 
@@ -86,23 +106,3 @@ docker push bfrevel/smartticket-web:latest
 ----
 kubectl apply -f smartticket.yaml
 ----
-
-## Instructions for minikube
-
-[source, sh]
-----
-# Start minikube
-minikube start
-
-# Enable Nginx Proxy
-minikube addons enable ingress
-
-# Apply the SmartTicket application
-kubectl apply -f smartticket.yaml
-
-# On MacOS (don't forget to enter your password)
-minikube tunnel
-----
-
-Open your browser
-http://web.localdev.me[]
