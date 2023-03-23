@@ -15,7 +15,7 @@ dependencies {
     implementation 'io.quarkus:quarkus-reactive-pg-client'
     implementation 'io.quarkus:quarkus-redis-client'
     implementation 'io.quarkus:quarkus-arc'
-    testImplementation 'io.quarkus:quarkus-junit5'
+    implementation 'io.quarkus:quarkus-micrometer-registry-prometheus'
 }
 
 group 'com.appdynamics.demo.smartticket'

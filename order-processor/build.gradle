@@ -12,6 +12,7 @@ dependencies {
     implementation enforcedPlatform("${quarkusPlatformGroupId}:${quarkusPlatformArtifactId}:${quarkusPlatformVersion}")
     implementation 'io.quarkus:quarkus-smallrye-reactive-messaging-rabbitmq'
     implementation 'io.quarkus:quarkus-arc'
+    implementation 'io.quarkus:quarkus-micrometer-registry-prometheus'
     testImplementation 'io.quarkus:quarkus-junit5'
 }
 
