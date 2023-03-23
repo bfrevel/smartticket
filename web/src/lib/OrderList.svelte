@@ -32,6 +32,7 @@
             let order = {
                 status: "Sending",
                 event: event,
+                timestamp: Date.now()
             };
 
             orders = [order, ...orders];

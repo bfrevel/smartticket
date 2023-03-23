@@ -7,7 +7,7 @@
 <div
     class="alert alert-info alert-dismissible"
     role="alert"
-    title="event-{order.event.id}-order"
+    title="event-{order.event.id}-order-{order.timestamp}"
     out:fly={{ x: 200, duration: 1000 }}
 >
     <div>Event: <strong>{order.event.name}</strong></div>
