@@ -1,26 +1,18 @@
 <script>
   import { onMount } from "svelte";
   import EventListItem from "./EventListItem.svelte";
-
   let events;
   let event_api_url;
 
-  onMount(() => {
-    let hostnameArray = window.location.hostname.split(".");
-    hostnameArray[0] = 'event-api'
-    event_api_url = hostnameArray.join(".")
-    loadEvents();
-  });
+  onMount(async () => {
+    event_api_url = window.location.hostname != 'web.smartticket' ? "/event-api" : "";
 
-  const loadEvents = async () => {
-    if (event_api_url != null) {
-      await fetch(`http://${event_api_url}/event`)
-        .then((r) => r.json())
-        .then((data) => {
-          events = data;
-        });
-    }
-  };
+    await fetch(`${event_api_url}/event`)
+      .then((r) => r.json())
+      .then((data) => {
+        events = data;
+      });
+  });
 </script>
 
 {#if events}

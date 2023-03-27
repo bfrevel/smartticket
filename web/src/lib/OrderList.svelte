@@ -4,14 +4,13 @@
     import { onMount } from "svelte";
 
     export let clientId = getClientId();
-    let order_api_url;
+    let order_api_url
+
 
     onMount(() => {
-        let hostnameArray = window.location.hostname.split(".");
-        hostnameArray[0] = 'order-api'
-        order_api_url = hostnameArray.join(".")
+        order_api_url = window.location.hostname != 'web.smartticket' ? "/order-api" : "";
 
-        var source = new EventSource(`http://${order_api_url}/order?clientId=${clientId}`);
+        var source = new EventSource(`${order_api_url}/order?clientId=${clientId}`);
         source.onmessage = (event) => {
             var json = JSON.parse(event.data);
             let order = orders.find((item) => item.id == json.id);
@@ -28,25 +27,23 @@
 
     let orders = [];
     export const submitOrder = (event) => {
-        if (order_api_url != null) {
-            let order = {
-                status: "Sending",
-                event: event,
-                timestamp: Date.now()
-            };
+        let order = {
+            status: "Sending",
+            event: event,
+            timestamp: Date.now(),
+        };
 
-            orders = [order, ...orders];
+        orders = [order, ...orders];
 
-            fetch(`http://${order_api_url}/order?clientId=${clientId}&eventId=${event.id}`, {
-                method: "POST",
-            })
-                .then((res) => res.text())
-                .then((orderid) => {
-                    order.id = orderid;
-                    order.status = "Processing";
-                    orders = orders;
-                });
-        }
+        fetch(`${order_api_url}/order?clientId=${clientId}&eventId=${event.id}`, {
+            method: "POST",
+        })
+            .then((res) => res.text())
+            .then((orderid) => {
+                order.id = orderid;
+                order.status = "Processing";
+                orders = orders;
+            });
     };
 </script>
 

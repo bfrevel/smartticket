@@ -294,34 +294,29 @@ apiVersion: networking.k8s.io/v1
 kind: Ingress
 metadata:
   name: smartticket-ingress
+  annotations:
+    nginx.ingress.kubernetes.io/rewrite-target: /$2
   namespace: smartticket
 spec:
   ingressClassName: nginx
   rules:
-  - host: web.localdev.me
-    http:
+  - http:
       paths:
-      - path: /
+      - path: /()(.*)
         pathType: Prefix
         backend:
           service:
             name: web
             port:
               number: 80
-  - host: event-api.localdev.me
-    http:
-      paths:
-      - path: /
+      - path: /event-api(/|$)(.*)
         pathType: Prefix
         backend:
           service:
             name: event-api
             port:
               number: 80
-  - host: order-api.localdev.me
-    http:
-      paths:
-      - path: /
+      - path: /order-api(/|$)(.*)
         pathType: Prefix
         backend:
           service:
