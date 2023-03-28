@@ -5,7 +5,7 @@
   let event_api_url;
 
   onMount(async () => {
-    event_api_url = window.location.hostname != 'web.smartticket' ? "/event-api" : "";
+    event_api_url = window.location.hostname == 'web.smartticket' ? "http://event-api.smartticket" : "/event-api";
 
     await fetch(`${event_api_url}/event`)
       .then((r) => r.json())

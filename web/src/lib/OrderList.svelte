@@ -8,7 +8,7 @@
 
 
     onMount(() => {
-        order_api_url = window.location.hostname != 'web.smartticket' ? "/order-api" : "";
+        order_api_url = window.location.hostname == 'web.smartticket' ? "http://order-api.smartticket" : "/order-api";
 
         var source = new EventSource(`${order_api_url}/order?clientId=${clientId}`);
         source.onmessage = (event) => {
