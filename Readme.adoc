@@ -11,7 +11,7 @@ The application is using the following Product and Frameworks:
 
 * https://quarkus.io[Quarkus] for services
 * https://svelte.dev[Svelte] for web frontend
-* https://svelte.dev[Svelte] as the https server for the frontend
+* https://www.nginx.com[nginx] as the http server for the frontend
 * https://redis.io[Redis] for caching
 * https://postgresql.org[PostgreSQL] for persistence
 * https://rabbitmq.com[RabbitMQ] for messaging
@@ -51,7 +51,7 @@ minikube tunnel
 ----
 
 Open your browser
-http://web.localdev.me[]
+http://smartticket.localdev.me[]
 
 
 ## Run your private demo
