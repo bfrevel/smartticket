@@ -22,7 +22,7 @@ with Diagram("architecture"):
         order_api = Custom("order-api", "./custom/quarkus.png")
         order_rabbitmq = Rabbitmq("order-rabbitmq")
         order_api >> order_rabbitmq
-        order_processor = Custom("order-api", "./custom/quarkus.png")
+        order_processor = Custom("order-processor", "./custom/quarkus.png")
         order_rabbitmq >> order_processor
     
 
