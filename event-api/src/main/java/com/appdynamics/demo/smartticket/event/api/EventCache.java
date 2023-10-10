@@ -1,13 +1,12 @@
 package com.appdynamics.demo.smartticket.event.api;
 
-import javax.enterprise.context.ApplicationScoped;
-
 import com.appdynamics.demo.smartticket.event.api.model.Event;
 
 import io.quarkus.logging.Log;
 import io.quarkus.redis.datasource.ReactiveRedisDataSource;
 import io.quarkus.redis.datasource.value.ReactiveValueCommands;
 import io.smallrye.mutiny.Uni;
+import jakarta.enterprise.context.ApplicationScoped;
 
 @ApplicationScoped
 public class EventCache {

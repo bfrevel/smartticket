@@ -50,6 +50,18 @@ kubectl apply -f smartticket.yaml
 minikube tunnel
 ----
 
+### Instrucations for docker-desktop
+
+[source, sh]
+----
+# Install Nginx Proxy
+kubectl apply -f https://raw.githubusercontent.com/kubernetes/ingress-nginx/controller-v1.9.0/deploy/static/provider/cloud/deploy.yaml
+
+# Apply the SmartTicket application
+kubectl apply -f smartticket.yaml
+----
+
+
 Open your browser
 http://smartticket.localdev.me[]
 
@@ -67,7 +79,12 @@ Adapt the docker registry. Replace <bfrevel> with your personal registry.
 [source, sh]
 ----
 cd event-api
-./gradlew build -Dquarkus.package.type=native -Dquarkus.native.container-build=true
+
+# quarkus
+quarkus build --native -Dquarkus.native.container-build=true -Dquarkus.native.resources.includes=application.properties
+# gradle wrapper
+./gradlew build -Dquarkus.package.type=native -Dquarkus.native.container-build=true -Dquarkus.native.resources.includes=application.properties
+
 docker build -t bfrevel/smartticket-event-api:latest -f src/main/docker/Dockerfile.native-micro .
 docker push bfrevel/smartticket-event-api:latest
 ----
@@ -76,7 +93,12 @@ docker push bfrevel/smartticket-event-api:latest
 [source, sh]
 ----
 cd order-api
-./gradlew build -Dquarkus.package.type=native -Dquarkus.native.container-build=true
+
+# quarkus
+quarkus build --native -Dquarkus.native.container-build=true -Dquarkus.native.resources.includes=application.properties
+# gradle wrapper
+./gradlew build -Dquarkus.package.type=native -Dquarkus.native.container-build=true -Dquarkus.native.resources.includes=application.properties
+
 docker build -t bfrevel/smartticket-order-api:latest -f src/main/docker/Dockerfile.native-micro .
 docker push bfrevel/smartticket-order-api:latest
 ----
@@ -85,9 +107,22 @@ docker push bfrevel/smartticket-order-api:latest
 [source, sh]
 ----
 cd order-processor
-./gradlew build -Dquarkus.package.type=native -Dquarkus.native.container-build=true
+
+# quarkus
+quarkus build --native -Dquarkus.native.container-build=true -Dquarkus.native.resources.includes=application.properties
+# gradle wrapper
+./gradlew build -Dquarkus.package.type=native -Dquarkus.native.container-build=true -Dquarkus.native.resources.includes=application.properties
+
 docker build -t bfrevel/smartticket-order-processor:latest -f src/main/docker/Dockerfile.native-micro .
 docker push bfrevel/smartticket-order-processor:latest
+----
+
+.order-rabbitmq
+[source, sh]
+----
+cd order-rabbitmq
+docker build -t bfrevel/smartticket-order-rabbitmq:latest  .
+docker push bfrevel/smartticket-order-rabbitmq:latest
 ----
 
 .web

@@ -1,12 +1,11 @@
 package com.appdynamics.demo.smartticket.event.api;
 
-import javax.enterprise.context.ApplicationScoped;
-import javax.inject.Inject;
-
 import com.appdynamics.demo.smartticket.event.api.model.Event;
 
 import io.smallrye.mutiny.Multi;
 import io.smallrye.mutiny.Uni;
+import jakarta.enterprise.context.ApplicationScoped;
+import jakarta.inject.Inject;
 
 @ApplicationScoped
 public class EventService {

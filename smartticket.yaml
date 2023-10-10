@@ -24,7 +24,7 @@ spec:
         app: order-rabbitmq
     spec:
       containers:
-      - image: rabbitmq:3.11.10-alpine
+      - image: bfrevel/smartticket-order-rabbitmq:latest
         name: rabbitmq
         ports:
         - containerPort: 5672
@@ -40,7 +40,8 @@ metadata:
   namespace: smartticket
 spec:
   ports:
-  - port: 5672
+  - name: amqp
+    port: 5672
     protocol: TCP
     targetPort: 5672
   selector:
@@ -155,7 +156,7 @@ spec:
         app: event-api
     spec:
       containers:
-      - image: bfrevel/smartticket-event-api
+      - image: bfrevel/smartticket-event-api:latest
         name: event-api
         ports:
         - containerPort: 8080
@@ -200,7 +201,7 @@ spec:
         app: order-api
     spec:
       containers:
-      - image: bfrevel/smartticket-order-api
+      - image: bfrevel/smartticket-order-api:latest
         name: order-api
         ports:
         - containerPort: 8080
@@ -243,7 +244,7 @@ spec:
         app: order-processor
     spec:
       containers:
-      - image: bfrevel/smartticket-order-processor
+      - image: bfrevel/smartticket-order-processor:latest
         name: order-processor
 
 
