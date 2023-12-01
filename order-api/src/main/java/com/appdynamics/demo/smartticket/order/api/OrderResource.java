@@ -38,15 +38,6 @@ public class OrderResource {
     }
 
     @GET
-    @Path("/info") 
-    @Produces(MediaType.SERVER_SENT_EVENTS)
-    public String info() {
-        String message = ConfigProvider.getConfig().getValue("greeting.message", String.class);
-        System.out.println("message is: " + message);
-        return message;
-    }
-
-    @GET
     @Produces(MediaType.SERVER_SENT_EVENTS)
     public Multi<OrderResponse> stream(@QueryParam("clientId") String clientId) {
         return ticketResponse.select()

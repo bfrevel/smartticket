@@ -4,6 +4,17 @@ kind: Namespace
 metadata:
   name: smartticket
 
+---
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: otel-config
+  namespace: smartticket
+data:
+  QUARKUS_OTEL_RESOURCE_ATTRIBUTES: service.namespace=smartticket_new
+  QUARKUS_OTEL_EXPORTER_OTLP_ENDPOINT: http://otel-collector.otel.svc.cluster.local:4317
+  QUARKUS_LOG_CONSOLE_FORMAT: "%d{yyyy-MM-dd HH:mm:ss,SSS} %-5p [traceId=%X{traceId}, parentId=%X{parentId}, spanId=%X{spanId}, sampled=%X{sampled}] [%c{3.}] (%t) %s%e%n"
+
 
 ---
 apiVersion: apps/v1
@@ -44,9 +55,13 @@ spec:
     port: 5672
     protocol: TCP
     targetPort: 5672
+  - name: mgmt
+    port: 15672
+    protocol: TCP
+    targetPort: 15672
   selector:
     app: order-rabbitmq
-  type: ClusterIP
+  type: LoadBalancer
 
 ---
 apiVersion: apps/v1
@@ -67,7 +82,7 @@ spec:
         app: event-postgres
     spec:
       containers:
-      - image: postgres:15.2-alpine
+      - image: postgres:16.1-alpine
         name: postgres
         ports:
         - containerPort: 5432
@@ -113,7 +128,7 @@ spec:
         app: event-redis
     spec:
       containers:
-      - image: redis:7.0.9-alpine
+      - image: redis:7.2.3-alpine
         name: redis
         ports:
         - containerPort: 6379
@@ -160,6 +175,9 @@ spec:
         name: event-api
         ports:
         - containerPort: 8080
+        envFrom:
+        - configMapRef:
+            name: otel-config
 
 ---
 apiVersion: v1
@@ -205,6 +223,9 @@ spec:
         name: order-api
         ports:
         - containerPort: 8080
+        envFrom:
+        - configMapRef:
+            name: otel-config
 
 ---
 apiVersion: v1
@@ -246,6 +267,9 @@ spec:
       containers:
       - image: bfrevel/smartticket-order-processor:latest
         name: order-processor
+        envFrom:
+        - configMapRef:
+            name: otel-config
 
 
 ---

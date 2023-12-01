@@ -55,7 +55,7 @@ minikube tunnel
 [source, sh]
 ----
 # Install Nginx Proxy
-kubectl apply -f https://raw.githubusercontent.com/kubernetes/ingress-nginx/controller-v1.9.0/deploy/static/provider/cloud/deploy.yaml
+kubectl apply -f https://raw.githubusercontent.com/kubernetes/ingress-nginx/controller-v1.9.4/deploy/static/provider/cloud/deploy.yaml
 
 # Apply the SmartTicket application
 kubectl apply -f smartticket.yaml
@@ -121,7 +121,7 @@ docker push bfrevel/smartticket-order-processor:latest
 [source, sh]
 ----
 cd order-rabbitmq
-docker build -t bfrevel/smartticket-order-rabbitmq:latest  .
+docker build -t bfrevel/smartticket-order-rabbitmq:latest .
 docker push bfrevel/smartticket-order-rabbitmq:latest
 ----
 
@@ -129,6 +129,7 @@ docker push bfrevel/smartticket-order-rabbitmq:latest
 [source, sh]
 ----
 cd web
+npm clean-install
 npm run build
 docker build -t bfrevel/smartticket-web:latest .
 docker push bfrevel/smartticket-web:latest

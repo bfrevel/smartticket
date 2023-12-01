@@ -1,4 +1,4 @@
-FROM rabbitmq:3.6.12-management
+FROM rabbitmq:3.12.10-management-alpine
 
 ADD rabbitmq.config /etc/rabbitmq/
 ADD definitions.json /etc/rabbitmq/
